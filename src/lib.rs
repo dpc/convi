@@ -28,7 +28,7 @@ impl<F, T> CastFrom<F> for T where T : From<F> {
     }
 }
 
-/// Checked cast like `TryFrom` but panicking, instead of returning an error.
+/// Expect cast like `TryFrom` but panicking, instead of returning an error.
 ///
 /// Let's face it, usually you know that the cast won't fail, but
 /// just don't want to risk that you've got something wrong and thus corrupt
@@ -38,16 +38,16 @@ impl<F, T> CastFrom<F> for T where T : From<F> {
 /// Literally implemented for all `TryFrom` impls like this:
 ///
 /// ```ignore
-/// fn cast_from_checked(other: F) -> Self {
+/// fn expect_from(other: F) -> Self {
 ///     Self::try_from(other).expect("data conversion invariant")
 /// }
 /// ```
-pub trait CheckedFrom<I> {
-    fn checked_from(other: I) -> Self;
+pub trait ExpectFrom<I> {
+    fn expect_from(other: I) -> Self;
 }
 
-impl<F, T> CheckedFrom<F> for T where T : TryFrom<F> , <T as TryFrom<F>>::Error : std::fmt::Debug {
-    fn checked_from(other: F) -> Self {
+impl<F, T> ExpectFrom<F> for T where T : TryFrom<F> , <T as TryFrom<F>>::Error : std::fmt::Debug {
+    fn expect_from(other: F) -> Self {
         Self::try_from(other).expect("data conversion invariant")
     }
 }

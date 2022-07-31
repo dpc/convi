@@ -32,11 +32,11 @@ will always be smaller than the given type, instead of
 you can:
 
 ```
-use convi::CheckedFrom;
+use convi::ExpectFrom;
 
 fn main() {
   let some_u32 = 3u32;
-  println!("{}",  usize::checked_from(some_u32));
+  println!("{}",  usize::expect_from(some_u32));
 }
 ```
 
