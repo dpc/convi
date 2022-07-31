@@ -72,7 +72,7 @@ compile_error!("One of the dependencies of `convi` requires at least 32 bit arch
 #[cfg(all(feature = "min_target_pointer_width_64", any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32")))]
 compile_error!("One of the dependencies of `convi` requires at least 64 bit architecture target.");
 #[cfg(all(feature = "min_target_pointer_width_128", any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32", target_pointer_width = "64")))]
-compile_error!("One of the dependencies of `convi` requires at least 64 bit architecture target.");
+compile_error!("One of the dependencies of `convi` requires at least 128 bit architecture target.");
 
 // #[cfg(all(target_pointer_width = "8", any(min_target_pointer_width_16, min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128)]
 // LOL, copy&paste, but whatever - cleanup later, PRs welcome
