@@ -16,7 +16,7 @@ name = "convi"
 path = "src/lib.rs"
 
 [features]
-min_target_ptr_width_16 = []
-min_target_ptr_width_32 = []
-min_target_ptr_width_64 = []
-min_target_ptr_width_128 = []
+min_target_pointer_width_16 = []
+min_target_pointer_width_32 = []
+min_target_pointer_width_64 = []
+min_target_pointer_width_128 = []

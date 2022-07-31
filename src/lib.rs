@@ -65,43 +65,43 @@ macro_rules! impl_cast_into {
     };
 }
 
-#[cfg(all(min_target_ptr_width_16, target_pointer_width = "8"))]
+#[cfg(all(min_target_pointer_width_16, target_pointer_width = "8"))]
 compile_error!("One of the dependencies of `convi` requires at least 16 bit architecture target.");
-#[cfg(all(min_target_ptr_width_32, any(target_pointer_width = "8", target_pointer_width = "16")))]
+#[cfg(all(min_target_pointer_width_32, any(target_pointer_width = "8", target_pointer_width = "16")))]
 compile_error!("One of the dependencies of `convi` requires at least 32 bit architecture target.");
-#[cfg(all(min_target_ptr_width_64, any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32")))]
+#[cfg(all(min_target_pointer_width_64, any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32")))]
 compile_error!("One of the dependencies of `convi` requires at least 64 bit architecture target.");
-#[cfg(all(min_target_ptr_width_128, any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32", target_pointer_width = "64")))]
+#[cfg(all(min_target_pointer_width_128, any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32", target_pointer_width = "64")))]
 compile_error!("One of the dependencies of `convi` requires at least 64 bit architecture target.");
 
-// #[cfg(all(target_pointer_width = "8", any(min_target_ptr_width_16, min_target_ptr_width_32, min_target_ptr_width_64, min_target_ptr_width_128)]
+// #[cfg(all(target_pointer_width = "8", any(min_target_pointer_width_16, min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128)]
 // LOL, copy&paste, but whatever - cleanup later, PRs welcome
-#[cfg(any(min_target_ptr_width_128))]
+#[cfg(any(min_target_pointer_width_128))]
 impl_cast_into!(u128, usize);
-#[cfg(any(min_target_ptr_width_128))]
+#[cfg(any(min_target_pointer_width_128))]
 impl_cast_into!(i128, isize);
-#[cfg(any(min_target_ptr_width_128))]
+#[cfg(any(min_target_pointer_width_128))]
 impl_cast_into!(u64, isize);
 
-#[cfg(any(min_target_ptr_width_64, min_target_ptr_width_128))]
+#[cfg(any(min_target_pointer_width_64, min_target_pointer_width_128))]
 impl_cast_into!(u64, usize);
-#[cfg(any(min_target_ptr_width_64, min_target_ptr_width_128))]
+#[cfg(any(min_target_pointer_width_64, min_target_pointer_width_128))]
 impl_cast_into!(i64, isize);
-#[cfg(any(min_target_ptr_width_64, min_target_ptr_width_128))]
+#[cfg(any(min_target_pointer_width_64, min_target_pointer_width_128))]
 impl_cast_into!(u32, isize);
 
-#[cfg(any(min_target_ptr_width_32, min_target_ptr_width_64, min_target_ptr_width_128))]
+#[cfg(any(min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128))]
 impl_cast_into!(u32, usize);
-#[cfg(any(min_target_ptr_width_32, min_target_ptr_width_64, min_target_ptr_width_128))]
+#[cfg(any(min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128))]
 impl_cast_into!(i32, isize);
-#[cfg(any(min_target_ptr_width_32, min_target_ptr_width_64, min_target_ptr_width_128))]
+#[cfg(any(min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128))]
 impl_cast_into!(u16, isize);
 
-#[cfg(any(min_target_ptr_width_16, min_target_ptr_width_32, min_target_ptr_width_64, min_target_ptr_width_128))]
+#[cfg(any(min_target_pointer_width_16, min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128))]
 impl_cast_into!(u16, usize);
-#[cfg(any(min_target_ptr_width_16, min_target_ptr_width_32, min_target_ptr_width_64, min_target_ptr_width_128))]
+#[cfg(any(min_target_pointer_width_16, min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128))]
 impl_cast_into!(i16, isize);
-#[cfg(any(min_target_ptr_width_16, min_target_ptr_width_32, min_target_ptr_width_64, min_target_ptr_width_128))]
+#[cfg(any(min_target_pointer_width_16, min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128))]
 impl_cast_into!(u8, isize);
 
 impl_cast_into!(u8, usize);

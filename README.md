@@ -6,7 +6,7 @@ Tired of the pain of casting `usize` in Rust? This crate is here to help.
 First, by enabling cargo features on this crate like this:
 
 ```
-convi = { version = "*", version = [ "min_target_ptr_width_32"] }
+convi = { version = "*", features = [ "min_target_ptr_width_32"] }
 ```
 
 you can mark your code as not compatible with architectures with
