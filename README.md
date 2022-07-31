@@ -16,7 +16,6 @@ conversions like:
 ```ignore
 use convi::CastFrom;
 
-
 fn main() {
   let some_u32 = 3u32;
   println!("{}",  usize::cast_from(some_u32));
