@@ -65,13 +65,13 @@ macro_rules! impl_cast_into {
     };
 }
 
-#[cfg(all(min_target_pointer_width_16, target_pointer_width = "8"))]
+#[cfg(all(feature = "min_target_pointer_width_16", target_pointer_width = "8"))]
 compile_error!("One of the dependencies of `convi` requires at least 16 bit architecture target.");
-#[cfg(all(min_target_pointer_width_32, any(target_pointer_width = "8", target_pointer_width = "16")))]
+#[cfg(all(feature = "min_target_pointer_width_32", any(target_pointer_width = "8", target_pointer_width = "16")))]
 compile_error!("One of the dependencies of `convi` requires at least 32 bit architecture target.");
-#[cfg(all(min_target_pointer_width_64, any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32")))]
+#[cfg(all(feature = "min_target_pointer_width_64", any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32")))]
 compile_error!("One of the dependencies of `convi` requires at least 64 bit architecture target.");
-#[cfg(all(min_target_pointer_width_128, any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32", target_pointer_width = "64")))]
+#[cfg(all(feature = "min_target_pointer_width_128", any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32", target_pointer_width = "64")))]
 compile_error!("One of the dependencies of `convi` requires at least 64 bit architecture target.");
 
 // #[cfg(all(target_pointer_width = "8", any(min_target_pointer_width_16, min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128)]
