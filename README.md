@@ -1,24 +1,25 @@
 # Convi - convenient (but safe) conversion (`From`-like) traits for Rust
 
 
-Tired of the pain of casting `usize` in Rust? This crate is here to help.
+Tired of the pain of casting `usize` and other types in Rust safely? This crate is here to help.
 
-First, by enabling cargo features on this crate like this:
+By enabling cargo features on this crate like this:
 
-```
-convi = { version = "*", features = [ "min_target_ptr_width_32"] }
+```norust
+convi = { version = "*", features = [ "min_target_pointer_width_32" ] }
 ```
 
 you can mark your code as not compatible with architectures with
-pointer size less than 32 bits. This will enable conversions like:
+pointer size less than 32 bits. This will enable additional infallible `usize`
+conversions like:
 
-```
+```ignore
 use convi::CastFrom;
 
 
 fn main() {
   let some_u32 = 3u32;
-  println!("{}",  usize::cast_from(some_u32);
+  println!("{}",  usize::cast_from(some_u32));
 }
 ```
 
@@ -35,7 +36,7 @@ use convi::CheckedFrom;
 
 fn main() {
   let some_u32 = 3u32;
-  println!("{}",  usize::checked_from(some_u32);
+  println!("{}",  usize::checked_from(some_u32));
 }
 ```
 
