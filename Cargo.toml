@@ -1,0 +1,22 @@
+[package]
+name = "convi"
+version = "0.0.1"
+edition = "2021"
+authors = ["Dawid Ciężarkiewicz <dpc@dpc.pw>"]
+description = "Convenient (but safe) conversion (`From`-like) traits"
+documentation = "https://docs.rs/convi"
+homepage = "https://docs.rs/convi"
+repository = "https://github.com/dpc/convi"
+keywords = ["try", "conv", "conversion", "cast"]
+license = "MPL-2.0"
+readme = "README.md"
+
+[lib]
+name = "convi"
+path = "src/lib.rs"
+
+[features]
+min_target_ptr_width_16 = []
+min_target_ptr_width_32 = []
+min_target_ptr_width_64 = []
+min_target_ptr_width_128 = []
