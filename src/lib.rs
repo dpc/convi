@@ -22,11 +22,12 @@ impl<I> CastInto<I> for I  where I: CastFrom<Self> {
     }
 }
 
-impl<F, T> CastFrom<F> for T where T : From<F> {
-    fn cast_from(other: F) -> Self {
-        Self::from(other)
-    }
-}
+// WELP: this is not going to fly...
+// impl<F, T> CastFrom<F> for T where T : From<F> {
+//     fn cast_from(other: F) -> Self {
+//         Self::from(other)
+//     }
+// }
 
 /// Expect cast like `TryFrom` but panicking, instead of returning an error.
 ///
@@ -57,9 +58,9 @@ macro_rules! impl_cast_into {
     // `()` indicates that the macro takes no argument.
     ($from:ty, $into:ty) => {
 
-        impl CastInto<$into> for $from {
-            fn cast_into(self) -> $into  {
-                self as $into
+        impl CastFrom<$from> for $into {
+            fn cast_from(v: $from) -> $into  {
+                v as $into
             }
         }
     };
@@ -76,33 +77,31 @@ compile_error!("One of the dependencies of `convi` requires at least 128 bit arc
 
 // #[cfg(all(target_pointer_width = "8", any(min_target_pointer_width_16, min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128)]
 // LOL, copy&paste, but whatever - cleanup later, PRs welcome
-#[cfg(any(min_target_pointer_width_128))]
+#[cfg(any(feature = "min_target_pointer_width_128"))]
 impl_cast_into!(u128, usize);
-#[cfg(any(min_target_pointer_width_128))]
+#[cfg(any(feature = "min_target_pointer_width_128"))]
 impl_cast_into!(i128, isize);
-#[cfg(any(min_target_pointer_width_128))]
+#[cfg(any(feature = "min_target_pointer_width_128"))]
 impl_cast_into!(u64, isize);
 
-#[cfg(any(min_target_pointer_width_64, min_target_pointer_width_128))]
+#[cfg(any(feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
 impl_cast_into!(u64, usize);
-#[cfg(any(min_target_pointer_width_64, min_target_pointer_width_128))]
+#[cfg(any(feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
 impl_cast_into!(i64, isize);
-#[cfg(any(min_target_pointer_width_64, min_target_pointer_width_128))]
+#[cfg(any(feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
 impl_cast_into!(u32, isize);
 
-#[cfg(any(min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128))]
+#[cfg(any(feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
 impl_cast_into!(u32, usize);
-#[cfg(any(min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128))]
+#[cfg(any(feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
 impl_cast_into!(i32, isize);
-#[cfg(any(min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128))]
+#[cfg(any(feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
 impl_cast_into!(u16, isize);
 
-#[cfg(any(min_target_pointer_width_16, min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128))]
+#[cfg(any(feature = "min_target_pointer_width_16", feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
 impl_cast_into!(u16, usize);
-#[cfg(any(min_target_pointer_width_16, min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128))]
+#[cfg(any(feature = "min_target_pointer_width_16", feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
 impl_cast_into!(i16, isize);
-#[cfg(any(min_target_pointer_width_16, min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128))]
+#[cfg(any(feature = "min_target_pointer_width_16", feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
 impl_cast_into!(u8, isize);
 
-impl_cast_into!(u8, usize);
-impl_cast_into!(i8, isize);
