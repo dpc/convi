@@ -111,4 +111,7 @@ mod impls_16 {
     impl_cast_into!(u16, usize);
     impl_cast_into!(i16, isize);
     impl_cast_into!(u8, isize);
+
+    impl_cast_into!(u8, usize);
+    impl_cast_into!(i8, isize);
 }
