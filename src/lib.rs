@@ -55,7 +55,6 @@ impl<F, T> ExpectFrom<F> for T where T : TryFrom<F> , <T as TryFrom<F>>::Error :
 
 #[allow(unused)]
 macro_rules! impl_cast_into {
-    // `()` indicates that the macro takes no argument.
     ($from:ty, $into:ty) => {
 
         impl CastFrom<$from> for $into {
@@ -78,29 +77,132 @@ compile_error!("One of the dependencies of `convi` requires at least 128 bit arc
 // #[cfg(all(target_pointer_width = "8", any(min_target_pointer_width_16, min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128)]
 // LOL, copy&paste, but whatever - cleanup later, PRs welcome
 #[cfg(any(feature = "min_target_pointer_width_128"))]
-impl_cast_into!(u128, usize);
-#[cfg(any(feature = "min_target_pointer_width_128"))]
-impl_cast_into!(i128, isize);
-#[cfg(any(feature = "min_target_pointer_width_128"))]
-impl_cast_into!(u64, isize);
+mod impls_128 {
+    use super::*;
+
+    impl_cast_into!(u128, usize);
+    impl_cast_into!(i128, isize);
+    impl_cast_into!(u64, isize);
+}
 
 #[cfg(any(feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
-impl_cast_into!(u64, usize);
-#[cfg(any(feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
-impl_cast_into!(i64, isize);
-#[cfg(any(feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
-impl_cast_into!(u32, isize);
+mod impls_64 {
+    use super::*;
+
+    impl_cast_into!(u64, usize);
+    impl_cast_into!(i64, isize);
+    impl_cast_into!(u32, isize);
+}
+
 
 #[cfg(any(feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
-impl_cast_into!(u32, usize);
-#[cfg(any(feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
-impl_cast_into!(i32, isize);
-#[cfg(any(feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
-impl_cast_into!(u16, isize);
+mod impls_32 {
+    use super::*;
+
+    impl_cast_into!(u32, usize);
+    impl_cast_into!(i32, isize);
+    impl_cast_into!(u16, isize);
+}
 
 #[cfg(any(feature = "min_target_pointer_width_16", feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
-impl_cast_into!(u16, usize);
-#[cfg(any(feature = "min_target_pointer_width_16", feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
-impl_cast_into!(i16, isize);
-#[cfg(any(feature = "min_target_pointer_width_16", feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
-impl_cast_into!(u8, isize);
+mod impls_16 {
+    use super::*;
+
+    impl_cast_into!(u16, usize);
+    impl_cast_into!(i16, isize);
+    impl_cast_into!(u8, isize);
+
+    impl_cast_into!(u8, usize);
+    impl_cast_into!(i8, isize);
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    macro_rules! cast_from_word_size_16 {
+        () => {
+            #[allow(dead_code)] // We only check if this builds.
+            fn can_cast_from_when_wordsize_is_16() {
+                let x = 1_u8;
+                let _ = usize::cast_from(x);
+                let _ = isize::cast_from(x);
+                let _: usize = x.cast_into();
+                let _: isize = x.cast_into();
+
+                let x = 1_i8;
+                let _ = isize::cast_from(x);
+                let _: isize = x.cast_into();
+
+                let x = 1_i16;
+                let _ = isize::cast_from(x);
+                let _: isize = x.cast_into();
+
+                let x = 1_u16;
+                let _ = usize::cast_from(x);
+                let _: usize = x.cast_into();
+            }
+        }
+    }
+
+    #[allow(unused_macros)]         // Only used if wordsize is >= 32
+    macro_rules! cast_from_word_size_32 {
+        () => {
+            #[allow(dead_code)] // We only check if this builds.
+            fn can_cast_from_when_wordsize_is_32() {
+                let x = 1_u16;
+                let _ = isize::cast_from(x);
+                let _: isize = x.cast_into();
+
+                let x = 1_i32;
+                let _ = isize::cast_from(x);
+                let _: isize = x.cast_into();
+
+                let x = 1_u32;
+                let _ = usize::cast_from(x);
+                let _: usize = x.cast_into();
+            }
+        }
+    }
+
+    #[allow(unused_macros)]         // Only used if wordsize is >= 64
+    macro_rules! cast_from_word_size_64 {
+        () => {
+            #[allow(dead_code)] // We only check if this builds.
+            fn can_cast_from_when_wordsize_is_64() {
+                let x = 1_u32;
+                let _ = isize::cast_from(x);
+                let _: isize = x.cast_into();
+
+                let x = 1_i64;
+                let _ = isize::cast_from(x);
+                let _: isize = x.cast_into();
+
+                let x = 1_u64;
+                let _ = usize::cast_from(x);
+                let _: usize = x.cast_into();
+            }
+        }
+    }
+
+    #[test]
+    #[cfg(feature = "min_target_pointer_width_16")]
+    fn can_cast_from_when_wordsize_is_16() {
+        cast_from_word_size_16!();
+    }
+
+    #[test]
+    #[cfg(feature = "min_target_pointer_width_32")]
+    fn can_cast_from_when_wordsize_is_32() {
+        cast_from_word_size_16!();
+        cast_from_word_size_32!();
+    }
+
+    #[test]
+    #[cfg(feature = "min_target_pointer_width_64")]
+    fn can_cast_from_when_wordsize_is_64() {
+        cast_from_word_size_16!();
+        cast_from_word_size_32!();
+        cast_from_word_size_64!();
+    }
+}
