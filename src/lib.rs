@@ -16,7 +16,7 @@ pub trait CastInto<I> {
     fn cast_into(self) -> I;
 }
 
-impl<I> CastInto<I> for I  where I: CastFrom<Self> {
+impl<F, I> CastInto<I> for F where I: CastFrom<Self> {
     fn cast_into(self) -> I {
         I::cast_from(self)
     }
@@ -104,4 +104,3 @@ impl_cast_into!(u16, usize);
 impl_cast_into!(i16, isize);
 #[cfg(any(feature = "min_target_pointer_width_16", feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
 impl_cast_into!(u8, isize);
-
