@@ -118,8 +118,10 @@ mod impls_16 {
 
 #[cfg(test)]
 mod tests {
+    #[allow(unused)]
     use super::*;
 
+    #[allow(unused_macros)]
     macro_rules! cast_from_word_size_16 {
         () => {
             #[allow(dead_code)] // We only check if this builds.
