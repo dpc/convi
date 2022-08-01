@@ -77,29 +77,38 @@ compile_error!("One of the dependencies of `convi` requires at least 128 bit arc
 // #[cfg(all(target_pointer_width = "8", any(min_target_pointer_width_16, min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128)]
 // LOL, copy&paste, but whatever - cleanup later, PRs welcome
 #[cfg(any(feature = "min_target_pointer_width_128"))]
-impl_cast_into!(u128, usize);
-#[cfg(any(feature = "min_target_pointer_width_128"))]
-impl_cast_into!(i128, isize);
-#[cfg(any(feature = "min_target_pointer_width_128"))]
-impl_cast_into!(u64, isize);
+mod impls_128 {
+    use super::*;
+
+    impl_cast_into!(u128, usize);
+    impl_cast_into!(i128, isize);
+    impl_cast_into!(u64, isize);
+}
 
 #[cfg(any(feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
-impl_cast_into!(u64, usize);
-#[cfg(any(feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
-impl_cast_into!(i64, isize);
-#[cfg(any(feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
-impl_cast_into!(u32, isize);
+mod impls_64 {
+    use super::*;
+
+    impl_cast_into!(u64, usize);
+    impl_cast_into!(i64, isize);
+    impl_cast_into!(u32, isize);
+}
+
 
 #[cfg(any(feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
-impl_cast_into!(u32, usize);
-#[cfg(any(feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
-impl_cast_into!(i32, isize);
-#[cfg(any(feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
-impl_cast_into!(u16, isize);
+mod impls_32 {
+    use super::*;
+
+    impl_cast_into!(u32, usize);
+    impl_cast_into!(i32, isize);
+    impl_cast_into!(u16, isize);
+}
 
 #[cfg(any(feature = "min_target_pointer_width_16", feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
-impl_cast_into!(u16, usize);
-#[cfg(any(feature = "min_target_pointer_width_16", feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
-impl_cast_into!(i16, isize);
-#[cfg(any(feature = "min_target_pointer_width_16", feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
-impl_cast_into!(u8, isize);
+mod impls_16 {
+    use super::*;
+
+    impl_cast_into!(u16, usize);
+    impl_cast_into!(i16, isize);
+    impl_cast_into!(u8, isize);
+}
