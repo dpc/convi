@@ -55,7 +55,6 @@ impl<F, T> ExpectFrom<F> for T where T : TryFrom<F> , <T as TryFrom<F>>::Error :
 
 #[allow(unused)]
 macro_rules! impl_cast_into {
-    // `()` indicates that the macro takes no argument.
     ($from:ty, $into:ty) => {
 
         impl CastFrom<$from> for $into {
