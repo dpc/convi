@@ -53,6 +53,17 @@ impl<F, T> ExpectFrom<F> for T where T : TryFrom<F> , <T as TryFrom<F>>::Error :
     }
 }
 
+/// Like [`TryInto`] but for [`ExpectFrom`].
+pub trait ExpectInto<I> {
+    fn expect_into(self) -> I;
+}
+
+impl<F, I> ExpectInto<I> for F where I: ExpectFrom<Self> {
+    fn expect_into(self) -> I {
+        I::expect_from(self)
+    }
+}
+
 #[allow(unused)]
 macro_rules! impl_cast_into {
     ($from:ty, $into:ty) => {
