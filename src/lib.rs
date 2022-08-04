@@ -1,7 +1,7 @@
 #![doc = include_str!("../README.md")]
 
 
-/// Like `From`, but defined for extra types
+/// Like [`From`], but for extra infallible conversions
 ///
 /// Depending on some cargo features being enabled on this
 /// crate (like minimum target pointer width), this
@@ -29,7 +29,7 @@ impl<F, I> CastInto<I> for F where I: CastFrom<Self> {
 //     }
 // }
 
-/// Expect cast like `TryFrom` but panicking, instead of returning an error.
+/// Expect cast like [`TryFrom`] but panicking, instead of returning an error.
 ///
 /// Let's face it, usually you know that the cast won't fail, but
 /// just don't want to risk that you've got something wrong and thus corrupt
