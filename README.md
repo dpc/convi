@@ -40,4 +40,4 @@ fn main() {
 ```
 
 
-Zero dependencies, small code, [review it yourself](./src/lib.rs).
+Zero dependencies, small code, [review it yourself](https://github.com/dpc/convi/blob/master/src/lib.rs).
