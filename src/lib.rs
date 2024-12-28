@@ -1,6 +1,5 @@
 #![doc = include_str!("../README.md")]
 
-
 /// Like [`From`], but for extra infallible conversions
 ///
 /// Depending on some cargo features being enabled on this
@@ -16,7 +15,10 @@ pub trait CastInto<I> {
     fn cast_into(self) -> I;
 }
 
-impl<F, I> CastInto<I> for F where I: CastFrom<Self> {
+impl<F, I> CastInto<I> for F
+where
+    I: CastFrom<Self>,
+{
     fn cast_into(self) -> I {
         I::cast_from(self)
     }
@@ -47,7 +49,11 @@ pub trait ExpectFrom<I> {
     fn expect_from(other: I) -> Self;
 }
 
-impl<F, T> ExpectFrom<F> for T where T : TryFrom<F> , <T as TryFrom<F>>::Error : std::fmt::Debug {
+impl<F, T> ExpectFrom<F> for T
+where
+    T: TryFrom<F>,
+    <T as TryFrom<F>>::Error: std::fmt::Debug,
+{
     fn expect_from(other: F) -> Self {
         Self::try_from(other).expect("data conversion invariant")
     }
@@ -58,7 +64,10 @@ pub trait ExpectInto<I> {
     fn expect_into(self) -> I;
 }
 
-impl<F, I> ExpectInto<I> for F where I: ExpectFrom<Self> {
+impl<F, I> ExpectInto<I> for F
+where
+    I: ExpectFrom<Self>,
+{
     fn expect_into(self) -> I {
         I::expect_from(self)
     }
@@ -67,22 +76,32 @@ impl<F, I> ExpectInto<I> for F where I: ExpectFrom<Self> {
 #[allow(unused)]
 macro_rules! impl_cast_into {
     ($from:ty, $into:ty) => {
-
         impl CastFrom<$from> for $into {
-            fn cast_from(v: $from) -> $into  {
+            fn cast_from(v: $from) -> $into {
                 v as $into
             }
         }
     };
 }
 
-#[cfg(all(feature = "min_target_pointer_width_16", target_pointer_width = "8"))]
-compile_error!("One of the dependencies of `convi` requires at least 16 bit architecture target.");
-#[cfg(all(feature = "min_target_pointer_width_32", any(target_pointer_width = "8", target_pointer_width = "16")))]
+#[cfg(all(
+    feature = "min_target_pointer_width_32",
+    any(target_pointer_width = "16")
+))]
 compile_error!("One of the dependencies of `convi` requires at least 32 bit architecture target.");
-#[cfg(all(feature = "min_target_pointer_width_64", any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32")))]
+#[cfg(all(
+    feature = "min_target_pointer_width_64",
+    any(target_pointer_width = "16", target_pointer_width = "32")
+))]
 compile_error!("One of the dependencies of `convi` requires at least 64 bit architecture target.");
-#[cfg(all(feature = "min_target_pointer_width_128", any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32", target_pointer_width = "64")))]
+#[cfg(all(
+    feature = "min_target_pointer_width_128",
+    any(
+        target_pointer_width = "16",
+        target_pointer_width = "32",
+        target_pointer_width = "64"
+    )
+))]
 compile_error!("One of the dependencies of `convi` requires at least 128 bit architecture target.");
 
 // #[cfg(all(target_pointer_width = "8", any(min_target_pointer_width_16, min_target_pointer_width_32, min_target_pointer_width_64, min_target_pointer_width_128)]
@@ -96,7 +115,10 @@ mod impls_128 {
     impl_cast_into!(u64, isize);
 }
 
-#[cfg(any(feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
+#[cfg(any(
+    feature = "min_target_pointer_width_64",
+    feature = "min_target_pointer_width_128"
+))]
 mod impls_64 {
     use super::*;
 
@@ -105,8 +127,11 @@ mod impls_64 {
     impl_cast_into!(u32, isize);
 }
 
-
-#[cfg(any(feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
+#[cfg(any(
+    feature = "min_target_pointer_width_32",
+    feature = "min_target_pointer_width_64",
+    feature = "min_target_pointer_width_128"
+))]
 mod impls_32 {
     use super::*;
 
@@ -115,7 +140,12 @@ mod impls_32 {
     impl_cast_into!(u16, isize);
 }
 
-#[cfg(any(feature = "min_target_pointer_width_16", feature = "min_target_pointer_width_32", feature = "min_target_pointer_width_64", feature = "min_target_pointer_width_128"))]
+#[cfg(any(
+    feature = "min_target_pointer_width_16",
+    feature = "min_target_pointer_width_32",
+    feature = "min_target_pointer_width_64",
+    feature = "min_target_pointer_width_128"
+))]
 mod impls_16 {
     use super::*;
 
@@ -155,10 +185,10 @@ mod tests {
                 let _ = usize::cast_from(x);
                 let _: usize = x.cast_into();
             }
-        }
+        };
     }
 
-    #[allow(unused_macros)]         // Only used if wordsize is >= 32
+    #[allow(unused_macros)] // Only used if wordsize is >= 32
     macro_rules! cast_from_word_size_32 {
         () => {
             #[allow(dead_code)] // We only check if this builds.
@@ -175,10 +205,10 @@ mod tests {
                 let _ = usize::cast_from(x);
                 let _: usize = x.cast_into();
             }
-        }
+        };
     }
 
-    #[allow(unused_macros)]         // Only used if wordsize is >= 64
+    #[allow(unused_macros)] // Only used if wordsize is >= 64
     macro_rules! cast_from_word_size_64 {
         () => {
             #[allow(dead_code)] // We only check if this builds.
@@ -195,7 +225,7 @@ mod tests {
                 let _ = usize::cast_from(x);
                 let _: usize = x.cast_into();
             }
-        }
+        };
     }
 
     #[test]
