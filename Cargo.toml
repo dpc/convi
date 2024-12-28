@@ -1,6 +1,6 @@
 [package]
 name = "convi"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Dawid Ciężarkiewicz <dpc@dpc.pw>"]
 description = "Convenient (but safe) conversion (`From`-like) traits"
