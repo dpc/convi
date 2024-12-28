@@ -13,7 +13,7 @@ you can mark your code as not compatible with architectures with
 pointer size less than 32 bits. This will enable additional infallible `usize`
 conversions like:
 
-```ignore
+```rust,ignore
 use convi::CastFrom;
 
 fn main() {
@@ -30,7 +30,7 @@ will always be smaller than the given type, instead of
 `u32::try_from(some_usize).expect("must not fail")`,
 you can:
 
-```
+```rust
 use convi::ExpectFrom;
 
 fn main() {
